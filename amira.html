@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Management System</title>
+</head>
+<body>
+  <h1>Student Management System</h1>
+
+<script>
+class Student {
+  constructor(id, name, grades, attendance) {
+    this.id = id;
+    this.name = name;
+    this.grades = grades;
+    this.attendance = attendance;
+  }
+  getAverage() {
+    const sum = this.grades.reduce((total, grade) => total + grade, 0);
+    return sum / this.grades.length;
+  }
+  getGrade() {
+    const avg = this.getAverage();
+    if (avg >= 90) return "A";
+    else if (avg >= 80) return "B";
+    else if (avg >= 70) return "C";
+    else if (avg >= 60) return "D";
+    else if (avg >= 50) return "E";
+    else return "F";
+  }
+  getResult() {
+    const avg = this.getAverage();
+    if (avg >= 50 && this.attendance >= 75) return "ناجح";
+    else return "يحتاج مراجعة";
+  }
+}
+
+const studentsList = [
+  new Student(1, "أحمد", [85, 90, 88], 92),
+  new Student(2, "سارة", [45, 48, 42], 80),
+  new Student(3, "عمر", [30, 35, 40], 60),
+  new Student(4, "ليلى", [47, 49, 44], 76),
+];
+
+console.log("===== تقرير الطلاب =====");
+studentsList.forEach((student) => {
+  console.log(`الاسم: ${student.name} | المتوسط: ${student.getAverage().toFixed(2)} | التقدير: ${student.getGrade()} | النتيجة: ${student.getResult()}`);
+});
+
+const strugglingStudents = studentsList.filter((s) => {
+  const avg = s.getAverage();
+  return avg >= 40 && avg < 50;
+});
+
+const afterMercy = strugglingStudents.map((s) => {
+  return { name: s.name, oldAverage: s.getAverage(), newAverage: s.getAverage() + 5 };
+});
+
+console.log("الطلاب المتعثرون بعد الرأفة:", afterMercy);
+
+const sumAfterMercy = afterMercy.reduce((total, s) => total + s.newAverage, 0);
+const mercyAverage = afterMercy.length > 0 ? sumAfterMercy / afterMercy.length : 0;
+console.log(`متوسط درجات الطلاب المتعثرين بعد التعديل: ${mercyAverage.toFixed(2)}`);
+</script>
+</body>
+</html>
